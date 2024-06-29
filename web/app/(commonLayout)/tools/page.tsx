@@ -2,15 +2,19 @@
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import React, { useEffect } from 'react'
-import ToolProviderList from '@/app/components/tools/provider-list'
+import dynamic from 'next/dynamic'
+
+const ToolProviderList = dynamic(() => import('@/app/components/tools/provider-list'), { ssr: false })
 
 const Layout: FC = () => {
   const { t } = useTranslation()
 
   useEffect(() => {
-    document.title = `${t('tools.title')} - Dify`
-  }, [])
+    if (typeof window !== 'undefined')
+      document.title = `${t('tools.title')} - Dify`
+  }, [t])
 
   return <ToolProviderList />
 }
+
 export default React.memo(Layout)
